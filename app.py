@@ -41,7 +41,7 @@ def login():
         print(username,password)
     return render_template("login.html")
 
-class user(db.Model):
+class User(db.Model):
     id = db.Column(db.Integer,primary_key = True)
     username = db.Column(db.String)
     password = db.Column(db.String)
@@ -51,8 +51,27 @@ class user(db.Model):
     city = db.Column(db.String)
     intro = db.Column(db.String)
 
-@app.route("/register")
+@app.route("/register",methods=['get','post'])
 def register():
+    if request.method == "POST":
+        realname = request.form['name']
+        username = request.form['username']
+        password = request.form['password']
+        sex = request.form['sex']
+        mylike ='|'.join(request.form.getlist('like'))
+        city = request.form['city']
+        intro = request.form['intro']
+        user = User(
+            realname=realname,
+            username = username,
+            password =password,
+            sex = sex,
+            mylike = mylike,
+            city = city,
+            intro = intro
+        )
+        db.session.add(user)
+        db.session.commit()
     return render_template("register.html")
 
 @app.context_processor
