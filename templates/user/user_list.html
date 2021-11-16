@@ -31,7 +31,7 @@
 					<!-- 媒体列表 -->
                     <h3>用户管理</h3>
                     <div class="panel">
-                        <form action=""  method="get" class="form-horizontal" >
+                        <form action=""  method="post" class="form-horizontal" >
                             <div class="form-group">
                                 <label for="q" class="col-xs-2 control-label">关键字</label>
                                 <div class="col-xs-10">
@@ -99,8 +99,8 @@
                             <td>{{ user.sex }}</td>
                             <td>{{ user.city }}</td>
                             <td>
-                                <a href="">修改</a>
-                                <a href="">删除</a>
+                                <a href="{{url_for("editUser",user_id=user.id)}}">修改</a>
+                                <a href="{{url_for("deleteUser",user_id=user.id)}}">删除</a>
                             </td>
                         </tr>
                         {% endfor %}
