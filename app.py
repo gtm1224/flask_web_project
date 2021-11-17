@@ -111,7 +111,8 @@ def userList():
         # print(q)
         # condition = {request.form['field']:q}
         # print(condition)
-        if request.form['field'] == "realname":
+        field = request.form['field']
+        if field == "realname":
             condition = User.realname.like('%%%s%%' % q)
             # print("<<<<<<>>>>>>>>")
             # print(('%%%s%%' % q))
@@ -120,27 +121,53 @@ def userList():
             condition = User.username.like('%%%s%%' % q)
             # use filter_by
             #users = User.query.filter_by(**condition).all()
-        if request.form['order'] == "1":
+        order_type = request.form['order']
+        if order_type == "1":
             order = User.id.asc()
         else:
             order = User.id.desc()
-
-        users = User.query.filter(condition,User.sex==request.form['sex']).order_by(order).all()
-        # print(".......",users)
-        return render_template("user/user_list.html", users=users
-                               )
+        users = User.query.filter(condition,User.sex==request.form['sex']).order_by(order).paginate(1,5)
+        query_string =""
     else:
         # return redirect(url_for(userList2))
         # users = User.query.all()
         # add pages
-        page = request.args.get('page', 1)
-        users = User.query.paginate(int(page), 10)
-        print("--------",users)
-    return render_template("user/user_list.html",users=users.items,
-                           pages = users.pages,
-                           total = users.total,
-                           pageList = users.iter_pages()
-                           )
+        page = request.args.get('page',1)
+        # print('wwwwwww',page)
+        # 如果提交了查询关键词q
+        q = request.args.get('q')
+        print("qqqqqqqqqqqqqqqqqqqqqqq",q)
+        if q:
+            print("ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss")
+            field = request.args.get('field')
+            print(field)
+            if field == "realname":
+                condition = User.realname.like('%%%s%%' % q)
+            else:
+                condition = User.username.like('%%%s%%' % q)
+
+            order_type = request.args.get('order')
+            if order_type == "1":
+                order = User.id.asc()
+            else:
+                order = User.id.desc()
+
+            sex = request.args.get('sex', 1)
+            users = User.query.filter(condition, User.sex == sex).order_by(order).paginate()
+            # 拼接查询条件（相当于request的query_string属性）
+            # 在模版的翻页部分添加上query_string
+            query_string = "q=" + q + "&field=" + field + "&sex=" + sex + "&order=" + order_type + "&page="+ page
+            print("sssssssss",query_string)
+        else:
+            users = User.query.paginate(int(page), 10)
+            query_string = ""
+        print(query_string)
+    return render_template("user/user_list.html", users=users.items,
+                               pages=users.pages,
+                               total=users.total,
+                               pageList=users.iter_pages(),
+                               condition=query_string
+                               )
 
 
 # delete user by id:
