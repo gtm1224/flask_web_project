@@ -113,18 +113,35 @@ def userList():
         # print(condition)
         if request.form['field'] == "realname":
             condition = User.realname.like('%%%s%%' % q)
-            print("<<<<<<>>>>>>>>")
-            print(('%%%s%%' % q))
+            # print("<<<<<<>>>>>>>>")
+            # print(('%%%s%%' % q))
         else:
+            # use filter like
             condition = User.username.like('%%%s%%' % q)
-    # use filter_by
-    #     users = User.query.filter_by(**condition).all()
-    # use filter like
-        users = User.query.filter(condition).all()
+            # use filter_by
+            #users = User.query.filter_by(**condition).all()
+        if request.form['order'] == "1":
+            order = User.id.asc()
+        else:
+            order = User.id.desc()
 
+        users = User.query.filter(condition,User.sex==request.form['sex']).order_by(order).all()
+        # print(".......",users)
+        return render_template("user/user_list.html", users=users
+                               )
     else:
-        users = User.query.all()
-    return render_template("user/user_list.html",users=users)
+        # return redirect(url_for(userList2))
+        # users = User.query.all()
+        # add pages
+        page = request.args.get('page', 1)
+        users = User.query.paginate(int(page), 10)
+        print("--------",users)
+    return render_template("user/user_list.html",users=users.items,
+                           pages = users.pages,
+                           total = users.total,
+                           pageList = users.iter_pages()
+                           )
+
 
 # delete user by id:
 @app.route("/user_delete/<int:user_id>")
