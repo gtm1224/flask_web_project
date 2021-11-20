@@ -72,11 +72,22 @@
 							</li>
 					<li><a href="">生活随笔</a></li>
 					<li><a href="">关于我</a></li>
+					<li class="dropdown">
+						<a href="#" data-toggle="dropdown">
+							文章模块
+							<b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu">
+							<li><a href="{{ url_for("article_app.post") }}">发布文章</a></li>
+							<li><a href="{{ url_for("article_app.list") }}">文章管理列表</a></li>
+						</ul>
+					</li>
+					<li><a href="{{ url_for("user_app.userList") }}">用户管理</a></li>
 				</ul>
                 <ul class="nav navbar-nav pull-right">
                    {% if not username %}
                         <li><a href="{{ url_for("login") }}">登录</a></li>
-                        <li><a href="{{ url_for("register") }}">注册</a></li>
+                        <li><a href="{{ url_for("user_app.register") }}">注册</a></li>
                    {% else %}
                        <li><a href="/usercenter">{{ username }}</a></li>
 				    {% endif %}

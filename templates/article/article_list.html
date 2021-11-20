@@ -29,7 +29,7 @@
 				</div>
 				<div class="col-md-6">
 					<!-- 媒体列表 -->
-                    <h3>用户管理</h3>
+                    <h3>文章管理</h3>
                     <div class="panel">
                         <form action=""  method="post" class="form-horizontal" >
                             <div class="form-group">
@@ -43,22 +43,14 @@
                                 <label for="field" class="col-xs-2 control-label">查询字段</label>
                                 <div class="col-xs-10">
                                     <select name="field" class="form-control">
-                                        <option value="username">查询字段</option>
-                                        <option value="realname">真实名字</option>
-                                        <option value="username">用户昵称</option>
+                                        <option value="title">根据标题查找</option>
+                                        <option value="content">根据文章内容查找</option>
+
                                     </select>
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <label for="sex" class="col-xs-2 control-label">性别</label>
-                                <div class="col-xs-2">
-                                   <select name="sex" class="form-control">
-                                        <option value="1" checked>男</option>
-                                        <option value="0">女</option>
-                                    </select>
-                                </div>
-                            </div>
+
                             <div class="form-group">
                                 <label for="排序" class="col-xs-2 control-label">排序</label>
                                 <div class="col-xs-2">
@@ -84,23 +76,21 @@
 					<table class="table table-bordered ">
 
                         <tr>
-                            <th>用户id</th>
-                            <th>用户名</th>
-                            <th>真实名</th>
-                            <th>性别</th>
-                            <th>城市</th>
+                            <th>文章ID</th>
+                            <th>文章标题</th>
+                            <th>作者</th>
+                            <th>发布日期</th>
                             <th>操作</th>
                         </tr>
-                        {% for user in users %}
+                        {% for article in articles %}
                         <tr>
-                            <td>{{ user.id }}</td>
-                            <td>{{ user.username }}</td>
-                            <td>{{ user.realname }}</td>
-                            <td>{{ user.sex }}</td>
-                            <td>{{ user.city }}</td>
+                            <td>{{ article.id }}</td>
+                            <td><a href="{{ url_for("article_app.view", article_id=article.id) }}">{{ article.title }}</a></td>
+                            <td>{{ article.author }}</td>
+                            <td>{{ article.pubdate }}</td>
                             <td>
-                                <a href="{{url_for("user_app.editUser",user_id=user.id)}}">修改</a>
-                                <a href="{{url_for("user_app.deleteUser",user_id=user.id)}}">删除</a>
+                                <a href="{{ url_for("article_app.edit", article_id=article.id) }}">修改</a>
+                                <a href="{{ url_for("article_app.delete", article_id=article.id) }}">删除</a>
                             </td>
                         </tr>
                         {% endfor %}
@@ -109,7 +99,7 @@
 					<ul class="pagination">
                         {% for page in pageList %}
                             {% if page!=None %}
-						<li><a href="?page={{ page }}&{{ condition|safe }}">{{ page }}</a></li>
+						<li><a href="{{ url_for("article_app.list", page=page) }}">{{ page }}</a></li>
                             {% else %}
                             <li><a href="#">...</a></li>
                             {% endif %}
@@ -123,5 +113,3 @@
 		</div>
 {% endblock %}
 
-	</body>
-</html>
