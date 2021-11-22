@@ -3,6 +3,7 @@ from libs import db
 from views.users import user_app
 from views.articles import article_app
 from flask_migrate import Migrate
+from models import Category
 # init db
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
@@ -50,12 +51,12 @@ def login():
 
 @app.context_processor
 def account():
-    username = None
-    return {"username":username}
+    cates = Category.query.all()
+    return {"cates":cates}
 
 
 
-migrate = Migrate(app,db)
+migrate = Migrate(app,db,render_as_batch=True)
 
 # class User(db.Model):
 #     id = db.Column(db.Integer,primary_key = True)

@@ -18,3 +18,10 @@ class Article(db.Model):
     content = db.Column(db.Text)
     author = db.Column(db.String)
     pubdate = db.Column(db.DateTime, default=datetime.utcnow)
+    cate_id = db.Column(db.Integer,db.ForeignKey("category.cate_id"))
+
+class Category(db.Model):
+    cate_id = db.Column(db.Integer,primary_key=True)
+    cate_name = db.Column(db.String,unique = True)
+    cate_order = db.Column(db.Integer,default=0)
+    articles = db.relationship("Article")

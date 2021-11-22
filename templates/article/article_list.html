@@ -29,7 +29,13 @@
 				</div>
 				<div class="col-md-6">
 					<!-- 媒体列表 -->
-                    <h3>文章管理</h3>
+                    <h3>文章管理
+					<small>
+					        <a href="{{ url_for("article_app.post") }}">
+					            添加文章
+					        </a>
+					    </small>
+					</h3>
                     <div class="panel">
                         <form action=""  method="post" class="form-horizontal" >
                             <div class="form-group">
