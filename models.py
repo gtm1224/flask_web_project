@@ -24,4 +24,4 @@ class Category(db.Model):
     cate_id = db.Column(db.Integer,primary_key=True)
     cate_name = db.Column(db.String,unique = True)
     cate_order = db.Column(db.Integer,default=0)
-    articles = db.relationship("Article")
+    articles = db.relationship("Article",cascade="delete")

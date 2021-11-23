@@ -33,16 +33,16 @@
 				<div class="col-md-6">
 					<!-- 媒体列表 -->
 					<ul class="media-list">
-						{% for news in newsLists %}
+						{% for article in articles %}
 						<li class="media">
 							<a href="" class="pull-left">
-								<img src="static/img/1.jpeg"  class="media-object">
+								<img src="./static/img/1.jpeg"  class="media-object">
 							</a>
 							<div class="media-body">
-								<h4 class="media-heading">{{news.title}}</h4>
+								<h4 class="media-heading">{{article.title}}</h4>
 								<div class="media">
-									<p>{{news['intro']}}</p>
-									<p>2019-12-24 12:00:00</p>
+									<p>{{article['intro']}}</p>
+									<p>{{article['author']}}</p>
 								</div>
 							</div>
 						</li>
@@ -50,11 +50,13 @@
 					</ul>
 					<!--  -->
 					<ul class="pagination">
-						<li><a href="">前一页</a></li>
-						<li class="disabled "><a href="#" >1</a></li>
-						<li class="active"><a href="" >2</a></li>
-						<li><a href="" >3</a></li>
-						<li><a href="">后一页</a></li>
+						{% for page in pageList %}
+						{% if page!=None %}
+						<li><a href="{{ url_for("article_app.getArticleList", page=page) }}">{{ page }}</a></li>
+						    {% else %}
+						    <li><a href="#">...</a></li>
+						    {% endif %}
+						{% endfor %}
 					</ul>
 				</div>
 				<div class="col-md-4">

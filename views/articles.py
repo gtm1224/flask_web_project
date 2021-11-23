@@ -13,11 +13,11 @@ def post():
         intro = request.form['intro']
         content = request.form['content']
         article = Article(
+            cate_id=cate_id,
             title = title,
             intro = intro,
             content = content,
-            author = "Tim",
-            cate_id=cate_id
+            author = "Tim"
         )
         db.session.add(article)
         db.session.commit()
@@ -72,6 +72,7 @@ def delete(article_id):
 def edit(article_id):
     article = Article.query.get(article_id)
     if request.method == "POST":
+        article.cate_id = request.form['cate']
         article.title = request.form['title']
         article.intro = request.form['intro']
         article.content = request.form['content']

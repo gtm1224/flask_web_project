@@ -15,12 +15,8 @@ app.register_blueprint(article_app,url_prefix="/article")
 
 @app.route("/")
 def index():
-    lists = [
-        {"title":"头条新闻","intro":"BTC reaches all time high!"},
-        {"title": "头条新闻", "intro": "BTC reaches all time high!"},
-        {"title": "头条新闻", "intro": "BTC reaches all time high!"},
-    ]
-    return render_template("index.html",newsLists = lists)
+
+    return render_template("index.html")
 
 # using get method to test form
 # @app.route('/login', methods=['get','post'])
