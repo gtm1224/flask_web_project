@@ -1,13 +1,15 @@
 from flask import Flask, render_template, request,redirect,url_for
-from libs import db
+from libs import db, login_required
 from views.users import user_app
 from views.articles import article_app
 from flask_migrate import Migrate
-from models import Category
+from models import Category, User
+from flask import session
 # init db
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///my.db"
+app.secret_key = "123456"
 db.init_app(app)
 # 添加user和articleblueprint
 app.register_blueprint(user_app,url_prefix="/user")
@@ -37,19 +39,32 @@ def index():
 # using post method:
 @app.route('/login',methods= ['get','post'])
 def login():
+    message = None
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        print("<---------------------------->")
-        print(username,password)
-    return render_template("login.html")
+        user = User.query.filter_by(username = username).first()
+        if user and user.validate_password(password):
+            session['user'] = user.username
+            return redirect(url_for("index"))
+        else:
+            message = "用户名与密码不匹配"
+    return render_template("login.html",message=message)
 
-
+@app.route("/logout")
+def logout():
+    if session.get('user'):
+        session.pop("user")
+    return redirect(url_for("index"))
 @app.context_processor
 def account():
     cates = Category.query.all()
     return {"cates":cates}
 
+@app.context_processor
+def account():
+    username = session.get('user')
+    return {"username":username}
 
 
 migrate = Migrate(app,db,render_as_batch=True)

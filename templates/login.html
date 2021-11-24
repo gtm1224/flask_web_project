@@ -11,6 +11,11 @@
 				<div class="main " >
 					
 						<h3>登录</h3>
+							{% if message %}
+							    <div class="alert alert-info" role="alert">
+							            {{ message }}
+							    </div>
+							{% endif %}
 						
 							<form action="" method="post">
 						

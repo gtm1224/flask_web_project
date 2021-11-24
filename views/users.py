@@ -1,5 +1,5 @@
 from flask import request,redirect,url_for,render_template
-from libs import db
+from libs import db, login_required
 from models import User
 from flask import Blueprint
 
@@ -7,7 +7,11 @@ user_app = Blueprint("user_app",__name__)
 
 @user_app.route("/register",methods = ['get','post'])
 def register():
+    message = None
     if request.method == "POST":
+        if validate_username(request.form['username']):
+            return render_template("user/register.html",message="用户名重复")
+
         realname = request.form['name']
         username = request.form['username']
         password = request.form['password']
@@ -23,11 +27,19 @@ def register():
                     city=city,
                     intro=intro)
 
+        # 密码加密
+        user.hash_password(password)
+        try:
+            db.session.add(user)
+            db.session.commit()
+            return redirect(url_for("login"))
+        except Exception as e:
+            message = "注册失败：" + str(e)
+    return render_template("user/register.html",message=message)
 
-        db.session.add(user)
-        db.session.commit()
-
-    return render_template("user/register.html")
+# 验证用户是否重复
+def validate_username(username):
+    return User.query.filter_by(username=username).first()
 
 # 获得用户列表
 # 如果用户刚进入列表页是访问http://127.0.0.1/user/list
@@ -35,6 +47,7 @@ def register():
 # 的路由
 @user_app.route("/list/<int:page>", methods=['get', "post"])
 @user_app.route("/list", defaults={"page":1},methods=['get', "post"])
+@login_required
 def userList(page):
     if request.method == "POST":
         q = request.form['q']
