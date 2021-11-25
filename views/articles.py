@@ -14,15 +14,23 @@ def post():
         intro = request.form['intro']
         content = request.form['content']
         article = Article(
-            cate_id=cate_id,
-            title = title,
-            intro = intro,
-            content = content,
-            author = "Tim"
-        )
+                    cate_id = cate_id,
+                    title=title,
+                    intro=intro,
+                    content=content,
+                    author="Tim"
+         )
+
+
         db.session.add(article)
         db.session.commit()
+        # 由于我们是在article_app模块下
+        # 因此url_for中的视图函数名可以省略article_app
+        import json
+        message = {"message":"发布成功"}
+        return json.dumps(message)
         return redirect(url_for(".list"))
+
     return render_template("article/post.html")
 
 # 获得文章列表
