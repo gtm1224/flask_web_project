@@ -58,31 +58,21 @@
 				<!-- 必须设置 navbar-nav-->
 				<ul class="nav navbar-nav" >
 					<li class="active"><a href="{{ url_for("index") }}">首页</a></li>
-							<!-- 必须设置dropdown -->
+
 					{% for cate in cates %}
-						<li><a href="{{ url_for("article_app.getArticleList",cate_id=cate.cate_id, page=1) }}">{{ cate.cate_name }}</a> </li>
-					{% endfor %}
-					{% if username %}
-					<li class="dropdown">
-						<a href="#" data-toggle="dropdown">
-							文章模块
-							<b class="caret"></b>
-						</a>
-						<ul class="dropdown-menu">
-							<li><a href="{{ url_for("article_app.post") }}">发布文章</a></li>
-							<li><a href="{{ url_for("article_app.list") }}">文章管理列表</a></li>
-						</ul>
-					</li>
-					<li><a href="{{ url_for("user_app.userList") }}">用户管理</a></li>
-					<li><a href="{{ url_for("article_app.cateList") }}">分类管理</a></li>
-					{% endif %}
-				</ul>
+                        <li><a href="{{ url_for("article_app.getArticleList",cate_id=cate.cate_id, page=1) }}">{{ cate.cate_name }}</a> </li>
+                    {% endfor %}
+
+                </ul>
                 <ul class="nav navbar-nav pull-right">
                    {% if not username %}
                         <li><a href="{{ url_for("login") }}">登录</a></li>
                         <li><a href="{{ url_for("user_app.register") }}">注册</a></li>
                    {% else %}
-                       <li><a href="#">{{ username }}</a></li>
+                       <li><a href="{{ url_for("member_app.member_index") }}">欢迎{{ username }}回来</a></li>
+                       {% if username=="admin" %}
+                            <li><a href="{{ url_for("admin_app.admin_index") }}">进入网站后台</a></li>
+                           {% endif %}
                        <li><a href="{{ url_for("logout") }}">logout</a></li>
 				    {% endif %}
                 </ul>

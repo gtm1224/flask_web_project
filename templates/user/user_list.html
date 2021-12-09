@@ -43,7 +43,7 @@
                                 <label for="field" class="col-xs-2 control-label">查询字段</label>
                                 <div class="col-xs-10">
                                     <select name="field" class="form-control">
-                                        <option value="username">查询字段</option>
+                                        <option value="realname">查询字段</option>
                                         <option value="realname">真实名字</option>
                                         <option value="username">用户昵称</option>
                                     </select>
@@ -99,8 +99,8 @@
                             <td>{{ user.sex }}</td>
                             <td>{{ user.city }}</td>
                             <td>
-                                <a href="{{url_for("user_app.editUser",user_id=user.id)}}">修改</a>
-                                <a href="{{url_for("user_app.deleteUser",user_id=user.id)}}">删除</a>
+                                <a href="{{ url_for("user_app.editUser", user_id=user.id) }}">修改</a>
+                                <a href="{{ url_for("user_app.deleteUser", user_id=user.id) }}">删除</a>
                             </td>
                         </tr>
                         {% endfor %}
@@ -109,7 +109,7 @@
 					<ul class="pagination">
                         {% for page in pageList %}
                             {% if page!=None %}
-						<li><a href="?page={{ page }}&{{ condition|safe }}">{{ page }}</a></li>
+						<li><a href="{{ url_for("user_app.userList", page=page) }}">{{ page }}</a></li>
                             {% else %}
                             <li><a href="#">...</a></li>
                             {% endif %}

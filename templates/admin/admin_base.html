@@ -1,17 +1,16 @@
-<!DOCTYPE html>
-<html>
-	<head>
+{% block head %}
+    <head>
 		<meta charset="utf-8">
 		<title></title>
-		<link rel="stylesheet" type="text/css" href="./css/bootstrap.css"/>
-		<link rel="stylesheet" type="text/css" href="./css/bootstrap-theme.css"/>
+        <link rel="stylesheet" type="text/css" href="{{ url_for("static", filename="css/bootstrap.css") }}"/>
+	    <link rel="stylesheet" type="text/css" href="{{ url_for("static", filename="css/bootstrap-theme.css") }}"/>
 		<style type="text/css">
 			body{
 				padding-top: 52px;
 			}
 			.media a>img{
 				width: 120px;
-				
+
 			}
 			#left_menu>li{
 				width:100%;
@@ -33,13 +32,14 @@
 				margin: auto;
 				width: 300px;
 			}
-			
+
 		</style>
 	</head>
-	<body>
-	
-		<nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
-	
+{%  endblock %}
+
+{%  block nav %}
+      <nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
+
 			<!-- 手机屏幕显示 -->
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse"
@@ -55,45 +55,27 @@
 			<div class="collapse navbar-collapse" id="navmenu">
 				<!-- 必须设置 navbar-nav-->
 				<ul class="nav navbar-nav" >
-					<li class="active"><a href="">首页</a></li>
-							<!-- 必须设置dropdown -->
-					<li class="dropdown">
-								<a href="#" data-toggle="dropdown">
-									技术文章
-									<b class="caret"></b>
-								</a>
-								<ul class="dropdown-menu">
-									<li><a href="">Python编程</a></li>
-									<li><a href="">JavaScript编程</a></li>
-									<li><a href="">WEB开发技术</a></li>
-								</ul>
-							</li>
-					<li><a href="">生活随笔</a></li>
-					<li><a href="">关于我</a></li>
-				</ul>
-				<ul class="nav navbar-nav pull-right">
-					<li><a href="">登录</a></li>
-				</ul>
-			</div>
-		</nav> 
+					    <li class="active"><a href="{{ url_for("index") }}">返回网站首页</a></li>
+                        <li><a href="{{ url_for("admin_app.article_list") }}">文章管理</a></li>
+                        <li><a href="{{ url_for("admin_app.userList") }}">用户管理</a></li>
+                        <li><a href="{{ url_for("admin_app.cateList") }}">分类管理</a></li>
+                </ul>
 
-		<!-- 分页导航 -->
-		
-		<div class="container-fluid">
-			<div class="row">
-				
-				<div class="main col-md-12 col-lg-12 col-xs-12 col-sm-12" >
-					<article class="content">
-						<h1>标题</h1>
-						 <div class="body">
-							内容
-						 </div>
-					</article>
-				</div>
+                <ul class="nav navbar-nav pull-right">
+                       <li><a href="#">{{ username }}</a></li>
+                       <li><a href="{{ url_for("logout") }}">logout</a></li>
+                </ul>
 			</div>
-		</div>
-		
-		<footer>
+		</nav>
+
+{% endblock %}
+
+{% block content %}
+    管理框架
+{%  endblock %}
+
+{% block footer %}
+          <footer>
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-md-12">
@@ -109,7 +91,6 @@
 				</ul>
 			</nav>
 		</footer>
-		<script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
-		<script type="text/javascript" src="./js/bootstrap.js"></script>
-	</body>
-</html>
+		<script type="text/javascript" src="{{ url_for("static" ,filename="js/jquery-3.4.1.min.js") }}"></script>
+		<script type="text/javascript" src="{{ url_for("static" ,filename="js/bootstrap.js") }}"></script>
+{% endblock %}

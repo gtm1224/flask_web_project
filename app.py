@@ -1,26 +1,27 @@
 from flask import Flask, render_template, request,redirect,url_for
-from libs import db, login_required
+from libs import db
 from views.users import user_app
 from views.articles import article_app
 from views.upload import upload_app
 from flask_migrate import Migrate
 from models import Category, User
 from flask import session
+from admin import admin_app
+from member import member_app
+from sqlalchemy import MetaData
+from settings import config
 # init db
 app = Flask(__name__)
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///my.db"
-app.config['ALLOW_UPLOAD_TYPE'] = ["image/jpeg","image/png"]
-
-app.secret_key = "123456"
+app.config.from_object(config['development'])
 db.init_app(app)
 # 添加user和articleblueprint
 app.register_blueprint(user_app,url_prefix="/user")
 app.register_blueprint(article_app,url_prefix="/article")
 app.register_blueprint(upload_app,url_prefix="/upload")
+app.register_blueprint(admin_app,url_prefix="/admin")
+app.register_blueprint(member_app,url_prefix="/member")
 @app.route("/")
 def index():
-
     return render_template("index.html")
 
 # using get method to test form
@@ -59,8 +60,9 @@ def logout():
     if session.get('user'):
         session.pop("user")
     return redirect(url_for("index"))
+
 @app.context_processor
-def account():
+def getCateList():
     cates = Category.query.all()
     return {"cates":cates}
 

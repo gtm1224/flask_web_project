@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 <!DOCTYPE html>
 <html>
-	
+
 	<body>
-	
-{% block content %}		
+
+{% block content %}
+
 		<!-- 面包屑导航 -->
 <ul class="breadcrumb">
 			<li><a href="">平哥编程</a></li>
@@ -33,29 +34,33 @@
 				<div class="col-md-6">
 					<!-- 媒体列表 -->
 					<ul class="media-list">
-						{% for article in articles %}
-						<li class="media">
+                        {% for article in articles %}
+
+                         <li class="media">
 							<a href="" class="pull-left">
-								<img src="./static/img/1.jpeg"  class="media-object">
+								<img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1579500583651&di=e5e4a680a6ff402c4e710a16670d8aa7&imgtype=0&src=http%3A%2F%2F5b0988e595225.cdn.sohucs.com%2Fimages%2F20180427%2Fa7edbf22edbf4756ac126ee282b1086f.jpeg"  class="media-object">
 							</a>
 							<div class="media-body">
-								<h4 class="media-heading">{{article.title}}</h4>
+								<h4 class="media-heading"><a href="{{ url_for("article_app.view", article_id=article.id) }}">{{ article.title }}</a></h4>
 								<div class="media">
-									<p>{{article['intro']}}</p>
-									<p>{{article['author']}}</p>
+									<p>{{ article['intro'] }}</p>
+
 								</div>
 							</div>
 						</li>
-						{% endfor %}
+
+					    {% endfor %}
+
+
 					</ul>
 					<!--  -->
 					<ul class="pagination">
 						{% for page in pageList %}
-						{% if page!=None %}
+                            {% if page!=None %}
 						<li><a href="{{ url_for("article_app.getArticleList", page=page) }}">{{ page }}</a></li>
-						    {% else %}
-						    <li><a href="#">...</a></li>
-						    {% endif %}
+                            {% else %}
+                            <li><a href="#">...</a></li>
+                            {% endif %}
 						{% endfor %}
 					</ul>
 				</div>
@@ -101,6 +106,7 @@
 				</div>
 			</div>
 		</div>
-		{% endblock %}
+{% endblock %}
+
 	</body>
 </html>

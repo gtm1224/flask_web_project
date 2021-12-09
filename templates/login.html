@@ -1,22 +1,17 @@
 {% extends "base.html" %}
-<!DOCTYPE html>
-<html>
 	
-	<body>
-		{% block content %}
-		<!-- 分页导航 -->
+	{% block content %}
 		
-		<div class="container">
+		<div class="container-fluid">
 			<div class="row">
-				<div class="main " >
-					
-						<h3>登录</h3>
-							{% if message %}
-							    <div class="alert alert-info" role="alert">
-							            {{ message }}
-							    </div>
-							{% endif %}
-						
+				<div class="main col-md-12 col-lg-12 col-xs-12 col-sm-12" >
+
+						<h1>登录</h1>
+                            {% if message %}
+                                <div class="alert alert-info" role="alert">
+                                        {{ message }}
+                                </div>
+                            {% endif %}
 							<form action="" method="post">
 						
 								<div class="form-group">
@@ -31,10 +26,11 @@
 									<input class="btn" type="submit" name="submit" id="btn1" value="立即登录" />
 								</div>
 							</form>
+						 </div>
+
 				</div>
 			</div>
 		</div>
-		
-		{% endblock %}
+		{%  endblock %}
 	</body>
 </html>

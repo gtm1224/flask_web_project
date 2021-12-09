@@ -2,7 +2,14 @@ from flask import Blueprint,request,render_template
 from flask import current_app
 import json
 import os
+from libs import login_required
 upload_app = Blueprint("upload",__name__)
+
+
+@upload_app.before_request
+@login_required
+def is_login():
+    pass
 
 @upload_app.route("/",methods=['get','post'])
 def upload():
